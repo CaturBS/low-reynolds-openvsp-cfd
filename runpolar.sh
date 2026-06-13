@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ANGLES="0 4"
+ANGLES="8 12"
 mkdir -p polar
 
 for A in $ANGLES

@@ -1,0 +1,4 @@
+Run:
+sh runpolar.sh
+then after finish run:
+sh extractPolar.sh

@@ -1,0 +1,6 @@
+[0-9]*/
+processor*/
+postProcessing/
+*.foam
+log.*
+polar/*

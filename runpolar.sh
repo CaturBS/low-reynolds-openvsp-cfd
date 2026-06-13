@@ -16,7 +16,7 @@ do
         continue
     fi
     mkdir "$CASE"
-    cp -r baseCase "$CASE"
+    cp -r baseCase/* "$CASE"
 
     UX=$(python3 -c "
 import math

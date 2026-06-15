@@ -48,30 +48,28 @@ print(f'{-math.sin(math.radians($A)):.6f}')
 import math
 print(f'{math.cos(math.radians($A)):.6f}')
 ")
-	AREF=$(python3 - <<EOF
-span=$SPAN
-chord=($ROOT_CHORD + $TIP_CHORD)/2
-print(span*chord)
-EOF
-)
-LREF=$(python3 - <<EOF
-cr=$ROOT_CHORD
-ct=$TIP_CHORD
+	AREF=$(python3 -c "
+span = $SPAN
+chord = ($ROOT_CHORD + $TIP_CHORD)/2
+print(f'{span*chord:.6f}')
+")
+	LREF=$(python3 -c "
+cr = $ROOT_CHORD
+ct = $TIP_CHORD
 
 lam=ct/cr
 mac=(2.0/3.0)*cr*((1+lam+lam*lam)/(1+lam))
 
-print(f"{mac:.6f}")
-EOF
-)
+print(f'{mac:.6f}')
+")
     sed -i "s/INLET_UX/$UX/g" $CASE/0/U
     sed -i "s/INLET_UZ/$UZ/g" $CASE/0/U
-    sed -i "s/DRAGX/$DRAGX/g" $CASE/system/controlDict/forceCoeffs
-    sed -i "s/DRAGZ/$DRAGZ/g" $CASE/system/controlDict/forceCoeffs
-    sed -i "s/LIFTX/$LIFTX/g" $CASE/system/controlDict/forceCoeffs
-    sed -i "s/LIFTZ/$LIFTZ/g" $CASE/system/controlDict/forceCoeffs
-    sed -i "s/AREF/$AREF/g" $CASE/system/controlDict/forceCoeffs
-    sed -i "s/LREF/$LREF/g" $CASE/system/controlDict/forceCoeffs
+    sed -i "s/DRAGX/$DRAGX/g" $CASE/system/controlDict
+    sed -i "s/DRAGZ/$DRAGZ/g" $CASE/system/controlDict
+    sed -i "s/LIFTX/$LIFTX/g" $CASE/system/controlDict
+    sed -i "s/LIFTZ/$LIFTZ/g" $CASE/system/controlDict
+    sed -i "s/AREF/$AREF/g" $CASE/system/controlDict
+    sed -i "s/LREF/$LREF/g" $CASE/system/controlDict
     START=$(date +%s)
     simpleFoam -case "$CASE" | tee "$CASE/log.simpleFoam"
     END=$(date +%s)

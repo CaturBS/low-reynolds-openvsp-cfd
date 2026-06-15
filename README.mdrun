@@ -2,9 +2,11 @@
 
 To simulate object
 Run:
-sh runpolar.sh
+bash runpolar.sh
 then after finish run:
-sh extractPolar.sh
+bash extractPolar.sh
+(use bash instead of sh)
 
 To change object with new stl file:
 delete all in basecase/constant/trisurface/ folder and copy new stl file in it. You can export your openvsp project file to stl.
+Then change setting in file/geometry.conf

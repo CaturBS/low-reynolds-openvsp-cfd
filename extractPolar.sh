@@ -1,20 +1,34 @@
 #!/bin/bash
 
-echo "alpha,CL,CD,CM" > polar.csv
+RHO=1.225
+V=2.0
+S=0.0325
+C=0.065
 
-for D in polar/alpha_*
+Q=$(awk "BEGIN {print 0.5*$RHO*$V*$V}")
+
+echo "alpha,Drag_N,Lift_N,Mpitch_Nm,CD,CL,CM" > polar_forces.csv
+
+for D in polar/*
 do
+
     A=$(basename "$D" | sed 's/alpha_//')
 
-    FILE=$(find "$D/postProcessing/forceCoeffs" -name coefficient.dat)
+    FILE=$(find "$D/postProcessing/forces" -name force.dat | tail -1)
 
     LAST=$(tail -1 "$FILE")
 
-    CD=$(echo "$LAST" | awk '{print $2}')
-    CL=$(echo "$LAST" | awk '{print $5}')
-    CM=$(echo "$LAST" | awk '{print $8}')
+    FX=$(echo "$LAST" | awk '{print $2}')
+    FZ=$(echo "$LAST" | awk '{print $4}')
 
-    echo "$A,$CL,$CD,$CM" >> polar.csv
+    MPITCH=$(echo "$LAST" | awk '{print $8}')
+
+    CD=$(awk "BEGIN {print $FX/($Q*$S)}")
+    CL=$(awk "BEGIN {print $FZ/($Q*$S)}")
+    CM=$(awk "BEGIN {print $MPITCH/($Q*$S*$C)}")
+
+    echo "$A,$FX,$FZ,$MPITCH,$CD,$CL,$CM" >> polar_forces.csv
+
 done
 
-sort -n -t, -k1,1 polar.csv -o polar.csv
+sort -t, -k1 -n polar_forces.csv -o polar_forces.csv

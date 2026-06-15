@@ -32,6 +32,21 @@ runTimeModifiable true;
 
 functions
 {
+    forces
+    {
+        type            forces;
+        libs            ("libforces.so");
+
+        patches         (wing);
+
+        rho             rhoInf;
+        rhoInf          1.225;
+
+        CofR            (0 0 0);
+
+        writeControl    timeStep;
+        writeInterval   1;
+    }
 forceCoeffs
   {
     type            forceCoeffs;
@@ -44,14 +59,14 @@ forceCoeffs
 
     CofR            (0 0 0);
 
-    liftDir         (0 0 1);
-    dragDir         (1 0 0);
+    liftDir         (LIFTX 0 LIFTZ);
+    dragDir         (DRAGX 0 DRAGZ);
     pitchAxis       (0 1 0);
 
     magUInf         2.0;
-
-    lRef            0.08;
-    Aref            0.04;
+    
+    lRef            LREF;
+    Aref            AREF;
 
     writeControl    timeStep;
     writeInterval   1;
